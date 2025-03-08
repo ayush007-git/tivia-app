@@ -2,7 +2,8 @@
 import React from 'react';
 import { Timer } from 'lucide-react';
 
-const TimerDisplay = ({ timeLeft, maxTime = 8 }) => {
+const TimerDisplay = ({ timeLeft, maxTime }) => {
+  // Calculate the percentage of time remaining based on maxTime.
   const percentage = (timeLeft / maxTime) * 100;
 
   return (
@@ -12,8 +13,8 @@ const TimerDisplay = ({ timeLeft, maxTime = 8 }) => {
         <span className="font-mono text-xl text-gray-100">{timeLeft}s</span>
       </div>
       <div className="w-full bg-gray-700 rounded-full h-2">
-        <div 
-          className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
+        <div
+          className="bg-emerald-500 h-2 rounded-full transition-all ease-linear duration-1000"
           style={{ width: `${percentage}%` }}
         ></div>
       </div>

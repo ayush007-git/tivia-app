@@ -6,10 +6,11 @@ import TimerDisplay from './TimerDisplay';
 import { Button } from './components/button';
 
 const TriviaApp = () => {
+  const [times,setTime] = useState(15);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(8);
+  const [timeLeft, setTimeLeft] = useState(times);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,13 +24,13 @@ const TriviaApp = () => {
     setError(null);
     try {
       const response = await fetch(
-        `https://opentdb.com/api.php?amount=10&category=${categoryId}&type=multiple`
+        `https://opentdb.com/api.php?amount=10&category=${categoryId}&difficulty=medium`
       );
       const data = await response.json();
       if (data.response_code === 0) {
         setQuestions(data.results);
         setCurrentQuestionIndex(0);
-        setTimeLeft(15);
+        setTimeLeft(times);
       } else {
         throw new Error('Failed to fetch questions');
       }
@@ -67,7 +68,7 @@ const TriviaApp = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setIsFlipped(false);
-      setTimeLeft(8);
+      setTimeLeft(times);
       setAutoReveal(false);
     } else {
       // End of game – reset for a new game.
@@ -113,7 +114,7 @@ const TriviaApp = () => {
           <h2 className="text-2xl font-semibold text-gray-100">
             {selectedCategory.name}
           </h2>
-          <TimerDisplay timeLeft={timeLeft} />
+          <TimerDisplay timeLeft={timeLeft} maxTime={times} />
         </div>
         <TriviaCard
           question={currentQuestion}
